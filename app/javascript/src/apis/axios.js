@@ -12,8 +12,8 @@ export const setAuthHeaders = (setLoading = () => null) => {
       .querySelector('[name="csrf-token"]')
       .getAttribute("content")
   };
-  const token = localStorage.getItem("authToken");
-  const email = localStorage.getItem("authEmail");
+  const token = getFromLocalStorage("authToken");
+  const email = getFromLocalStorage("authEmail");
   if (token && email) {
     axios.defaults.headers["X-Auth-Email"] = email;
     axios.defaults.headers["X-Auth-Token"] = token;
@@ -24,9 +24,8 @@ export const setAuthHeaders = (setLoading = () => null) => {
 const handleSuccessResponse = response => {
   if (response) {
     response.success = response.status === 200;
-    console.log(response);
     if (response.data.notice) {
-      Toastr.success(response);
+      Toastr.success(response.data.notice);
     }
   }
   return response;

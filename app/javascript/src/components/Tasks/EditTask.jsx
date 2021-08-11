@@ -57,9 +57,7 @@ const EditTask = ({ history }) => {
       <TaskForm
         type="update"
         title={title}
-        userId={userId}
         setTitle={setTitle}
-        setUserId={setUserId}
         loading={loading}
         handleSubmit={handleSubmit}
       />

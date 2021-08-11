@@ -36,10 +36,9 @@ class TasksController < ApplicationController
   private
 
     def load_task
-      task = Task.find_by_slug!(params[:slug])
-      render status: :ok, json: { task: task }
+      @task = Task.find_by_slug!(params[:slug])
     rescue ActiveRecord::RecordNotFound => errors
-      render json: { errors: errors }, status: :not_found
+      render json: { errors: errors }
     end
 end
 
