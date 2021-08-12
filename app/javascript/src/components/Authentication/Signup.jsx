@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import SignupForm from "components/Authentication/Form/SignupForm";
-import userApi from "apis/users";
+import authApi from "apis/users";
 
 const Signup = ({ history }) => {
   const [name, setName] = useState("");
@@ -14,7 +14,7 @@ const Signup = ({ history }) => {
     event.preventDefault();
     try {
       setLoading(true);
-      await userApi.signup({
+      await authApi.signup({
         user: {
           name,
           email,

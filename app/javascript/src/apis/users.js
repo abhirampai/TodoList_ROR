@@ -1,11 +1,12 @@
 import axios from "axios";
 
-// const list = () => axios.get("/users");
+const login = payload => axios.post("/sessions", payload);
 
 const signup = payload => axios.post("/users", payload);
 
-const userApi = {
+const authApi = {
+  login,
   signup
 };
 
-export default userApi;
+export default authApi;
