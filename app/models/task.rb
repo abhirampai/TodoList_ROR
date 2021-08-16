@@ -3,6 +3,7 @@
 class Task < ApplicationRecord
   belongs_to :user
   validates :title, presence: true, length: { maximum: 50 }
+  has_many :comments, dependent: :destroy
   validates :slug, uniqueness: true
   validate :slug_not_changed
 

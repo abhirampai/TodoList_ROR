@@ -1,6 +1,6 @@
 import React from "react";
 import NavItem from "./NavItem";
-import authApi from "apis/auth";
+import authApi from "apis/users";
 import { resetAuthTokens } from "src/apis/axios";
 import { getFromLocalStorage, setToLocalStorage } from "helpers/storage";
 
