@@ -9,7 +9,7 @@ class Task < ApplicationRecord
   enum status: { unstarred: 0, starred: 1 }
   validates :slug, uniqueness: true
   validate :slug_not_changed
-
+  after_create :log_task_details
   before_create :set_slug
 
   private
@@ -35,6 +35,10 @@ class Task < ApplicationRecord
       starred = send(progress).starred.order("updated_at DESC")
       unstarred = send(progress).unstarred.order("updated_at DESC")
       starred + unstarred
+    end
+
+    def log_task_details
+      TaskLoggerJob.perform_later(self)
     end
 end
 
