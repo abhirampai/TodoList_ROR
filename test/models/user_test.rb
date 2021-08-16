@@ -16,7 +16,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_name_should_be_of_valid_length
-    @user.name = "a" * 50
+    @user.name = "a" * 100
     assert @user.invalid?
   end
 
