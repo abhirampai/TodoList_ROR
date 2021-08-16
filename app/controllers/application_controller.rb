@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   private
 
     def handle_unauthorized_user
-      render json: { error: "Permission Denied" }, status: :forbidden
+      render json: { error: t("authorization.denied") }, status: :forbidden
     end
 
     def current_user

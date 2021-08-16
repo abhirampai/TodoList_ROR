@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   defaults format: :json do
     resources :tasks, except: %i[new edit], param: :slug
-    resources :users, only: :create
+    resources :users, only: %i[create index]
     resource :sessions, only: %i[create destroy]
     resources :comments, only: :create
   end
