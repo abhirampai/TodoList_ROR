@@ -11,6 +11,7 @@ Bundler.require(*Rails.groups)
 module Granite
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    Redis.exists_returns_integer = false
     config.load_defaults 6.1
     config.active_job.queue_adapter = :sidekiq
 
