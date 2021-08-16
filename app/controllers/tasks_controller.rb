@@ -5,11 +5,12 @@ class TasksController < ApplicationController
   after_action :verify_policy_scoped, only: :index
   before_action :authenticate_user_using_x_auth_token
   before_action :load_task, only: %i[show update destroy]
+  before_action :ensure_authorized_update_to_restricted_attrs, only: %i[update]
 
   def index
-    #------new line added here------
-    @tasks = policy_scope(Task)
-    #-----end of added line-------
+    tasks = policy_scope(Task)
+    @pending_tasks = tasks.pending
+    @completed_tasks = tasks.completed
   end
 
   def create
@@ -53,13 +54,21 @@ class TasksController < ApplicationController
   private
 
     def task_params
-      params.require(:task).permit(:title, :user_id)
+      params.require(:task).permit(:title, :user_id, :progress)
     end
 
     def load_task
       @task = Task.find_by_slug!(params[:slug])
     rescue ActiveRecord::RecordNotFound => e
       render json: { errors: e }, status: :not_found
+    end
+
+    def ensure_authorized_update_to_restricted_attrs
+      is_editing_restricted_params = Task::RESTRICTED_ATTRIBUTES.any? { |a| task_params.key?(a) }
+      is_not_owner = @task.creator_id != @current_user.id
+      if is_editing_restricted_params && is_not_owner
+        authorization_error
+      end
     end
 end
 
