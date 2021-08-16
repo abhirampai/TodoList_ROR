@@ -22,7 +22,7 @@ def enable_test_coverage
 end
 
 enable_test_coverage if ENV["COVERAGE"]
-
+Dir[Rails.root.join("test/support/**/*.rb")].each { |f| require f }
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
