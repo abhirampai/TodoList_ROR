@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  after_create :log_task_details
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
   before_action :authenticate_user_using_x_auth_token
@@ -49,6 +50,10 @@ class TasksController < ApplicationController
       render status: :unprocessable_entity,
              json: { errors: @task.errors.full_messages.to_sentence }
     end
+  end
+
+  def log_task_details
+    TaskLoggerJob.perform_later(self)
   end
 
   private
