@@ -62,4 +62,6 @@ gem "react-rails"
 gem "bcrypt", "~> 3.1.13"
 gem "simplecov", require: false, group: :test
 gem "pundit"
+gem "bundler-audit", require: false
+gem "ruby_audit", require: false
 
