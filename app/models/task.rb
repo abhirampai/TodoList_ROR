@@ -6,6 +6,7 @@ class Task < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }
   has_many :comments, dependent: :destroy
   enum progress: { pending: 0, completed: 1 }
+  enum status: { unstarred: 0, starred: 1 }
   validates :slug, uniqueness: true
   validate :slug_not_changed
 
@@ -28,6 +29,12 @@ class Task < ApplicationRecord
       if slug_changed? && self.persisted?
         errors.add(:slug, t("task.slug.immutable"))
       end
+    end
+
+    def self.inorder_of(progress)
+      starred = send(progress).starred.order("updated_at DESC")
+      unstarred = send(progress).unstarred.order("updated_at DESC")
+      starred + unstarred
     end
 end
 
