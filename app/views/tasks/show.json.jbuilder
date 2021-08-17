@@ -2,7 +2,7 @@ json.task do
   json.extract! @task,
     :id,
     :slug,
-    :title,
+    :title
 
   json.assigned_user do
     json.id @task.user.id
