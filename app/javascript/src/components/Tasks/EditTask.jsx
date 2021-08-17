@@ -48,8 +48,8 @@ const EditTask = ({ history }) => {
     try {
       const response = await tasksApi.show(slug);
       setTitle(response.data.task.title);
-      setAssignedUser(response.data.assigned_user);
-      setUserId(response.data.assigned_user.id);
+      setAssignedUser(response.data.task.assigned_user);
+      setUserId(response.data.task.assigned_user.id);
     } catch (error) {
       logger.error(error);
     }
