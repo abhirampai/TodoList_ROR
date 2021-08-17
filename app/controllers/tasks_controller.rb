@@ -59,8 +59,8 @@ class TasksController < ApplicationController
 
     def load_task
       @task = Task.find_by_slug!(params[:slug])
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { errors: e }, status: :not_found
+    rescue ActiveRecord::RecordNotFound => errors
+      render json: { errors: errors }
     end
 
     def ensure_authorized_update_to_restricted_attrs

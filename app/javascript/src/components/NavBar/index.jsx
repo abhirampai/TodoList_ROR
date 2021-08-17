@@ -8,7 +8,7 @@ const NavBar = () => {
   const userName = getFromLocalStorage("authUserName");
   const handleLogout = async () => {
     try {
-      await authApi.logout();
+      await authApi.signout();
       setToLocalStorage({
         authToken: null,
         email: null,
