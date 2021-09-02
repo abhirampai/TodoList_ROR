@@ -2,6 +2,7 @@
 
 class Task < ApplicationRecord
   belongs_to :user
+  belongs_to :project
   RESTRICTED_ATTRIBUTES = %i[title user_id]
   validates :title, presence: true, length: { maximum: 50 }
   has_many :comments, dependent: :destroy

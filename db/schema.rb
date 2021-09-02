@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_16_071133) do
+ActiveRecord::Schema.define(version: 2021_09_02_073634) do
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 2021_08_16_071133) do
     t.index ["user_id"], name: "index_preferences_on_user_id"
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.string "project_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -49,6 +55,7 @@ ActiveRecord::Schema.define(version: 2021_08_16_071133) do
     t.integer "creator_id"
     t.integer "progress", default: 0, null: false
     t.integer "status", default: 0, null: false
+    t.integer "project_id"
     t.index ["slug"], name: "index_tasks_on_slug", unique: true
   end
 
@@ -75,6 +82,7 @@ name: "index_user_preferences_on_user_id_and_notification_sent_date", unique: tr
   add_foreign_key "comments", "tasks"
   add_foreign_key "comments", "users"
   add_foreign_key "preferences", "users"
+  add_foreign_key "tasks", "projects", on_delete: :cascade
   add_foreign_key "tasks", "users", on_delete: :cascade
   add_foreign_key "user_notifications", "users"
 end

@@ -9,7 +9,14 @@ class TasksController < ApplicationController
 
   def index
     tasks = policy_scope(Task)
-    @pending_tasks = tasks.inorder_of(:pending).as_json(include: { user: { only: %i[name id] } })
+    @pending_tasks = tasks.inorder_of(:pending).as_json(
+      include: {
+        user: {
+          only: %i[name
+          id]
+        },
+        project: { only: %i[project_name id] }
+      })
     @completed_tasks = tasks.inorder_of(:completed)
   end
 
@@ -54,7 +61,7 @@ class TasksController < ApplicationController
   private
 
     def task_params
-      params.require(:task).permit(:title, :user_id, :progress, :status)
+      params.require(:task).permit(:title, :user_id, :progress, :status, :project_id)
     end
 
     def load_task

@@ -18,13 +18,22 @@ const TableHeader = ({ type }) => {
           {title}
         </th>
         {type === "pending" && (
-          <th
-            className="px-6 py-3 text-sm font-bold leading-4
+          <>
+            <th
+              className="px-6 py-3 text-sm font-bold leading-4
           tracking-wider text-left text-bb-gray-600
           text-opacity-50 bg-gray-50"
-          >
-            Assigned To
-          </th>
+            >
+              Assigned To
+            </th>
+            <th
+              className="px-6 py-3 text-sm font-bold leading-4
+        tracking-wider text-left text-bb-gray-600
+        text-opacity-50 bg-gray-50"
+            >
+              Project
+            </th>
+          </>
         )}
         {type === "completed" && (
           <>

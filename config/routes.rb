@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resource :sessions, only: %i[create destroy]
     resources :preferences, only: %i[show update]
     resources :comments, only: :create
+    resources :projects, only: :index
   end
 
   root "home#index"
