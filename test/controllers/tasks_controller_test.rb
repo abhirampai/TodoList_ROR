@@ -6,6 +6,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   def setup
     @creator = create(:user)
     @assignee = create(:user)
+    @project = create(:project)
     @task = create(:task, user: @assignee, creator_id: @creator.id)
     @creator_headers = headers(@creator)
     @assignee_headers = headers(@assignee)
@@ -25,14 +26,16 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_create_valid_task
-    post tasks_url, params: { task: { title: "Learn Ruby", user_id: @creator.id } }, headers: @creator_headers
+    post tasks_url, params: { task: { title: "Learn Ruby", user_id: @creator.id, project_id: @project.id } },
+                    headers: @creator_headers
     assert_response :success
     response_json = response.parsed_body
     assert_equal response_json["notice"], t("successfully_created", entity: "Task")
   end
 
   def test_shouldnt_create_task_without_title
-    post tasks_url, params: { task: { title: "", user_id: @creator.id } }, headers: @creator_headers
+    post tasks_url, params: { task: { title: "", user_id: @creator.id, project_id: @project.id } },
+                    headers: @creator_headers
     assert_response :unprocessable_entity
     response_json = response.parsed_body
     assert_equal response_json["errors"], "Title can't be blank"
@@ -41,7 +44,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   def test_creator_can_update_any_task_fields
     new_title = "#{@task.title}-(updated)"
     slug_url = "/tasks/#{@task.slug}"
-    task_params = { task: { title: new_title, user_id: 1 } }
+    task_params = { task: { title: new_title, user_id: 1, project_id: 1 } }
 
     put slug_url, params: task_params, headers: @creator_headers
     assert_response :success
@@ -70,7 +73,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   def test_assignee_shouldnt_update_restricted_task_fields
     new_title = "#{@task.title}-(updated)"
     slug_url = "/tasks/#{@task.slug}"
-    task_params = { task: { title: new_title, user_id: 1 } }
+    task_params = { task: { title: new_title, user_id: 1, project_id: 1 } }
 
     assert_no_changes -> { @task.reload.title } do
       put slug_url, params: task_params, headers: @assignee_headers

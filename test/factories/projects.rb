@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :project do
-    project_name { "MyString" }
+    project_name { Faker::Name.name }
   end
 end
 

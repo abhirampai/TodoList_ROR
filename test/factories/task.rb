@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :task do
     user
+    project
     title { Faker::Lorem.sentence }
     progress { "pending" }
     status { "unstarred" }
