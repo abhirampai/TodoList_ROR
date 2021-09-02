@@ -9,7 +9,10 @@ const TaskForm = ({
   setTitle,
   assignedUser,
   users,
+  projects,
+  assignedProject,
   setUserId,
+  setProjectId,
   loading,
   handleSubmit
 }) => {
@@ -17,9 +20,19 @@ const TaskForm = ({
     value: user.id,
     label: user.name
   }));
-  const defaultOption = {
+
+  const projectOptions = projects.map(project => ({
+    value: project.id,
+    label: project.project_name
+  }));
+  const userDefaultOption = {
     value: assignedUser?.id,
     label: assignedUser?.name
+  };
+
+  const projectDefaultOption = {
+    value: assignedProject?.id,
+    label: assignedProject?.project_name
   };
 
   return (
@@ -35,8 +48,19 @@ const TaskForm = ({
         <div className="w-full">
           <Select
             options={userOptions}
-            defaultValue={defaultOption}
+            defaultValue={userDefaultOption}
             onChange={e => setUserId(e.value)}
+            isSearchable
+          />
+        </div>
+      </div>
+      <div className="flex flex-row items-center justify-start mt-3">
+        <p className="w-3/12 leading-5 text-gray-800 text-md">Project: </p>
+        <div className="w-full">
+          <Select
+            options={projectOptions}
+            defaultValue={projectDefaultOption}
+            onChange={e => setProjectId(e.value)}
             isSearchable
           />
         </div>

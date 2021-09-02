@@ -66,7 +66,7 @@ const ShowTask = () => {
   return (
     <Container>
       <div className="flex justify-between text-bb-gray-600 mt-10">
-        <h1 className="pb-3 mt-5 mb-3 text-lg leading-5 font-bold">
+        <h1 className="pb-3 mt-5 mb-3 text-lg leading-5 font-bold capitalize">
           {task?.title}
         </h1>
         <div className="bg-bb-env px-2 mt-2 mb-4 rounded">
@@ -82,12 +82,13 @@ const ShowTask = () => {
           ></i>
         </div>
       </div>
-      <h2
-        className="pb-3 mb-3 text-md leading-5 text-bb-gray-600
-       text-opacity-50"
-      >
+      <h2 className="pb-3 mb-3 text-md leading-5 text-bb-gray-600 text-opacity-50">
         <span>Assigned To : </span>
         {task?.assigned_user.name}
+      </h2>
+      <h2 className="pb-3 mb-3 text-md leading-5 text-bb-gray-600 text-opacity-50">
+        <span>Project : </span>
+        {task?.assigned_project.project_name}
       </h2>
       <h2 className="pb-3 mb-3 text-md leading-5 text-bb-gray-600 text-opacity-50">
         <span>Created By : </span>

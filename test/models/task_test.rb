@@ -12,7 +12,8 @@ class TaskTest < ActiveSupport::TestCase
 
   def test_values_of_created_at_and_updated_at
     user = build(:user)
-    task = Task.new(title: "This is a test task", user: user)
+    project = build(:project)
+    task = Task.new(title: "This is a test task", user: user, project: project)
     assert_nil task.created_at
     assert_nil task.updated_at
 

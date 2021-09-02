@@ -33,7 +33,9 @@ const Progress = ({ title, completed = 0, total = 1 }) => {
             cy="40"
           />
         </svg>
-        <span className="absolute text-xl text-blue-700">{`${percent}%`}</span>
+        <span className="absolute text-xl text-blue-700">{`${Math.round(
+          percent
+        )}%`}</span>
       </div>
     </div>
   );

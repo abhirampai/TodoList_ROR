@@ -4,10 +4,13 @@ import TaskForm from "./Form/TaskForm";
 import PageLoader from "components/PageLoader";
 import tasksApi from "apis/tasks";
 import usersApi from "apis/users";
+import projectsApi from "../../apis/projects";
 
 const CreateTask = ({ history }) => {
   const [title, setTitle] = useState("");
   const [userId, setUserId] = useState("");
+  const [projectId, setProjectId] = useState("");
+  const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -15,7 +18,9 @@ const CreateTask = ({ history }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      await tasksApi.create({ task: { title, user_id: userId } });
+      await tasksApi.create({
+        task: { title, user_id: userId, project_id: projectId }
+      });
       setLoading(false);
       history.push("/dashboard");
     } catch (error) {
@@ -24,11 +29,14 @@ const CreateTask = ({ history }) => {
     }
   };
 
-  const fetchUserDetails = async () => {
+  const fetchUserAndProjectDetails = async () => {
     try {
-      const response = await usersApi.list();
-      setUsers(response.data.users);
-      setUserId(response.data.users[0].id);
+      const userApiResponse = await usersApi.list();
+      const projectApiResponse = await projectsApi.list();
+      setUsers(userApiResponse.data.users);
+      setUserId(userApiResponse.data.users[0].id);
+      setProjects(projectApiResponse.data.projects);
+      setProjectId(projectApiResponse.data.projects[0].id);
       setPageLoading(false);
     } catch (error) {
       logger.error(error);
@@ -37,7 +45,7 @@ const CreateTask = ({ history }) => {
   };
 
   useEffect(() => {
-    fetchUserDetails();
+    fetchUserAndProjectDetails();
   }, []);
 
   if (pageLoading) {
@@ -50,9 +58,12 @@ const CreateTask = ({ history }) => {
         setTitle={setTitle}
         setUserId={setUserId}
         assignedUser={users[0]}
+        setProjectId={setProjectId}
+        assignedProject={projects[0]}
         loading={loading}
         handleSubmit={handleSubmit}
         users={users}
+        projects={projects}
       />
     </Container>
   );

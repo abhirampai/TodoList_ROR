@@ -51,6 +51,12 @@ const TableRow = ({
               >
                 {rowData.user.name}
               </td>
+              <td
+                className="px-6 py-4 text-sm font-medium leading-5
+                            text-bb-gray-600 whitespace-no-wrap"
+              >
+                {rowData.project.project_name}
+              </td>
               <td className="pl-6 py-4 text-center cursor-pointer">
                 <i
                   className={classnames(
@@ -60,7 +66,7 @@ const TableRow = ({
                         rowData.status !== "starred"
                     },
                     {
-                      "text-white text-bb-yellow ri-star-fill":
+                      "text-bb-yellow ri-star-fill":
                         rowData.status === "starred"
                     }
                   )}
