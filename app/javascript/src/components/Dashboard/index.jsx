@@ -5,6 +5,7 @@ import tasksApi from "apis/tasks";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
 import Table from "components/Tasks/Table/index";
+import Progress from "../Common/Progress";
 
 const Dashboard = ({ history }) => {
   const [pendingTasks, setPendingTasks] = useState([]);
@@ -82,6 +83,11 @@ const Dashboard = ({ history }) => {
 
   return (
     <Container>
+      <Progress
+        title={"task progress"}
+        completed={completedTasks.length}
+        total={pendingTasks.length + completedTasks.length}
+      />
       {!either(isNil, isEmpty)(pendingTasks) && (
         <Table
           data={pendingTasks}
