@@ -9,6 +9,11 @@ json.task do
     json.name @task.user.name
   end
 
+  json.assigned_project do
+    json.id @task.project.id
+    json.project_name @task.project.project_name
+  end
+
  json.comments @comments do |comment|
     json.extract! comment,
       :id,

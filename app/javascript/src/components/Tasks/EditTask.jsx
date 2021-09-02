@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import tasksApi from "apis/tasks";
 import usersApi from "apis/users";
+import projectsApi from "apis/projects";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
 import { useParams } from "react-router-dom";
@@ -11,6 +12,9 @@ const EditTask = ({ history }) => {
   const [title, setTitle] = useState("");
   const [userId, setUserId] = useState("");
   const [assignedUser, setAssignedUser] = useState("");
+  const [projectId, setProjectId] = useState("");
+  const [assignedProject, setAssignedProject] = useState("");
+  const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -22,7 +26,7 @@ const EditTask = ({ history }) => {
       await tasksApi.update({
         slug,
         payload: {
-          task: { title, user_id: userId }
+          task: { title, user_id: userId, projectId: projectId }
         }
       });
       setLoading(false);
@@ -33,10 +37,12 @@ const EditTask = ({ history }) => {
     }
   };
 
-  const fetchUserDetails = async () => {
+  const fetchUserAndProjectDetails = async () => {
     try {
       const response = await usersApi.list();
+      const projectResponse = await projectsApi.list();
       setUsers(response.data.users);
+      setProjects(projectResponse.data.projects);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -50,6 +56,8 @@ const EditTask = ({ history }) => {
       setTitle(response.data.task.title);
       setAssignedUser(response.data.task.assigned_user);
       setUserId(response.data.task.assigned_user.id);
+      setAssignedProject(response.data.task.assigned_project);
+      setProjectId(response.data.task.assigned_project.id);
     } catch (error) {
       logger.error(error);
     }
@@ -57,7 +65,7 @@ const EditTask = ({ history }) => {
 
   const loadData = async () => {
     await fetchTaskDetails();
-    await fetchUserDetails();
+    await fetchUserAndProjectDetails();
   };
 
   useEffect(() => {
@@ -78,6 +86,9 @@ const EditTask = ({ history }) => {
         type="update"
         title={title}
         users={users}
+        projects={projects}
+        assignedProject={assignedProject}
+        setProjectId={setProjectId}
         assignedUser={assignedUser}
         setTitle={setTitle}
         setUserId={setUserId}
