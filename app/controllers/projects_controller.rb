@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
 
   def show
     project_id = Project.find_by_project_name!(params[:project_name])
-    tasks = Task.where(project_id: project_id).as_json(only: %i[title])
+    tasks = Task.where(project_id: project_id).as_json(only: %i[title progress])
     render status: :ok, json: { tasks: tasks }
   end
 end
