@@ -4,7 +4,10 @@ import { compose, head, join, juxt, tail, toUpper } from "ramda";
 const TableHeader = ({ type }) => {
   const getTitleCase = compose(join(""), juxt([compose(toUpper, head), tail]));
 
-  const title = `${getTitleCase(type)} Tasks`;
+  const title =
+    type === "home"
+      ? `${getTitleCase("pending")} Tasks`
+      : `${getTitleCase(type)} Tasks`;
 
   return (
     <thead>
