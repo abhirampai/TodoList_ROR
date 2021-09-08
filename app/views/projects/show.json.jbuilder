@@ -1,10 +1,2 @@
-json.task @tasks do |task|
-  json.extract! task,
-  "title",
-  "progress"
-
-  json.user do
-    json.extract! task["user"],
-    "name"
-  end
-end
+json.pending @pending_tasks
+json.completed @completed_tasks

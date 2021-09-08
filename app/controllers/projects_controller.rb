@@ -8,13 +8,14 @@ class ProjectsController < ApplicationController
 
   def show
     project_id = Project.find_by_project_name!(params[:project_name])
-    @tasks = Task.where(project_id: project_id).as_json(
+    @pending_tasks = Task.where(project_id: project_id).inorder_of(:pending).as_json(
       include: {
         user: {
           only: %i[name
           id]
         }
       })
+    @completed_tasks = Task.where(project_id: project_id).inorder_of(:completed)
   end
 end
 

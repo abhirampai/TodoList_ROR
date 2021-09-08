@@ -8,7 +8,8 @@ const TableRow = ({
   destroyTask,
   showTask,
   handleProgressToggle,
-  starTask
+  starTask,
+  showProject
 }) => {
   const isCompleted = type === "completed";
   const toggledProgress = isCompleted ? "pending" : "completed";
@@ -51,12 +52,15 @@ const TableRow = ({
               >
                 {rowData.user.name}
               </td>
-              <td
-                className="px-6 py-4 text-sm font-medium leading-5
+              {rowData.project?.project_name && (
+                <td
+                  className="px-6 py-4 text-sm font-medium leading-5
                             text-bb-gray-600 whitespace-no-wrap"
-              >
-                {rowData.project.project_name}
-              </td>
+                  onClick={() => showProject(rowData.project.project_name)}
+                >
+                  {rowData.project.project_name}
+                </td>
+              )}
               <td className="pl-6 py-4 text-center cursor-pointer">
                 <i
                   className={classnames(

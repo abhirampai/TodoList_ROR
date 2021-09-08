@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { all, isNil, isEmpty, either } from "ramda";
 
-import tasksApi from "apis/tasks";
+import { useParams } from "react-router-dom";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
 import Table from "components/Tasks/Table/index";
 import Progress from "../Common/Progress";
+import projectsApi from "apis/projects";
+import tasksApi from "apis/tasks";
 
-const Dashboard = ({ history }) => {
+const Projects = ({ history }) => {
+  const { project_name } = useParams();
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchTasks = async () => {
     try {
-      const response = await tasksApi.list();
-      setPendingTasks(response.data.tasks.pending);
-      setCompletedTasks(response.data.tasks.completed);
+      const response = await projectsApi.show(project_name);
+      setPendingTasks(response.data.pending);
+      setCompletedTasks(response.data.completed);
     } catch (error) {
       logger.error(error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const showProject = project_name => {
-    history.push(`/projects/${project_name}/show`);
   };
 
   const handleProgressToggle = async ({ slug, progress }) => {
@@ -50,6 +49,9 @@ const Dashboard = ({ history }) => {
     history.push(`/tasks/${slug}/show`);
   };
 
+  const showProject = project_name => {
+    history.push(`/projects/${project_name}/show`);
+  };
   const starTask = async (slug, status) => {
     try {
       const toggledStatus = status === "starred" ? "unstarred" : "starred";
@@ -88,13 +90,12 @@ const Dashboard = ({ history }) => {
   return (
     <Container>
       <Progress
-        title={"task progress"}
+        title={"project progress"}
         completed={completedTasks.length}
         total={pendingTasks.length + completedTasks.length}
       />
       {!either(isNil, isEmpty)(pendingTasks) && (
         <Table
-          type={"home"}
           data={pendingTasks}
           destroyTask={destroyTask}
           showTask={showTask}
@@ -115,4 +116,4 @@ const Dashboard = ({ history }) => {
   );
 };
 
-export default Dashboard;
+export default Projects;
