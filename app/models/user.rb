@@ -39,11 +39,6 @@ class User < ApplicationRecord
         task.user_id = task.creator_id
         task.save
       end
-      if self.tasks
-        self.tasks.each do |task|
-        task.destroy
-      end
-      end
     end
 end
 
