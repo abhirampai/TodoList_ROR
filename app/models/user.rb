@@ -19,7 +19,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }
   before_save :to_lowercase
   before_create :build_default_preference
-  before_destroy :change_task_owner_or_delete
+  before_destroy :change_task_owner
 
   private
 
@@ -31,7 +31,7 @@ class User < ApplicationRecord
       self.build_preference(notification_delivery_hour: Constants::DEFAULT_NOTIFICATION_DELIVERY_HOUR)
     end
 
-    def change_task_owner_or_delete
+    def change_task_owner
       tasks_to_change_owner = Task.where(
         "user_id = :user_id and creator_id <> :creator_id",
 { user_id: self.id, creator_id: self.id })
