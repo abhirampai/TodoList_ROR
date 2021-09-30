@@ -32,10 +32,12 @@ class User < ApplicationRecord
     end
 
     def change_task_owner_or_delete
-      tasks_to_change_owner = Task.where(user_id: self.id)
+      tasks_to_change_owner = Task.where(
+        "user_id = :user_id and creator_id <> :creator_id",
+{ user_id: self.id, creator_id: self.id })
       tasks_to_change_owner.each do |task|
         task.user_id = task.creator_id
-        task.save!
+        task.save
       end
       if self.tasks
         self.tasks.each do |task|
